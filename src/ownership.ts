@@ -47,16 +47,3 @@ export const transferOwnershipEsdt = async (
       await commonTxOperations(tx, userAccount, signer, provider);
 
 }
-
-(async () => {
-
-    await transferOwnershipEsdt(
-        /* Token Ticker */ "ticker",
-        /* Role Address */ BridgeAddress.devnet
-    );
-
-    exit(0);
-})().catch(e => {
-    console.error(e);
-    exit(1)
-})

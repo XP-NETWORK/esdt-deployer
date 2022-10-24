@@ -24,6 +24,8 @@ import {
     commonTxOperations
 } from './utils';
 
+import {transferOwnershipEsdt} from './ownership';
+
 export const setSpecialRolesEsdt = async (
     ticker:string,
     address:BridgeAddress,
@@ -61,13 +63,21 @@ export const setSpecialRolesEsdt = async (
 
 (async () => {
 
+    const ticker = "ticker";
+    const contract = BridgeAddress.devnet
+
     await setSpecialRolesEsdt(
-        /* Token Ticker */ "ticker",
-        /* Role Address */ BridgeAddress.devnet,
+        /* Token Ticker */ ticker,
+        /* Role Address */ contract,
         /* Roles */ [
             'ESDTRoleNFTCreate',
             'ESDTRoleNFTBurn'
         ]
+    );
+
+    await transferOwnershipEsdt(
+        /* Token Ticker */ ticker,
+        /* Role Address */ contract
     );
 
     exit(0);
