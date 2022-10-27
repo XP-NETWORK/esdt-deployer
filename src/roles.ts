@@ -104,9 +104,9 @@ export const setSpecialRolesEsdt = async (
     ]
 
     // Select one of the above
-    const ROLES = nftSpecialRoles;
+    const ROLES = sftSpecialRoles;
 
-    const ticker = "TLANDCHEST-112199";
+    const ticker = "TLANDCHEST-295de4" //"TLANDCHEST-112199";
     const contract = BridgeAddress.devnet
 
     await setSpecialRolesEsdt(

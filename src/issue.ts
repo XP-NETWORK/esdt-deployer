@@ -19,7 +19,7 @@ import {
     builtInSC,
     commonOpertationsGasLimit,
     issueESDTTypes,
-    ALL_PROPERTIES
+    sftTokenProperties
 } from './consts';
 
 import {
@@ -62,8 +62,8 @@ export const issueESDT = async (
     
         for (const property of tokenProperties){
     
-            // args.push(BytesValue.fromUTF8(property));
-            // args.push(BytesValue.fromUTF8(true.toString()));
+            args.push(BytesValue.fromUTF8(property));
+            args.push(BytesValue.fromUTF8(true.toString()));
         }
     
         const data = new ContractCallPayloadBuilder()
@@ -87,13 +87,13 @@ export const issueESDT = async (
 
 (async () => {
 
+
+
     await issueESDT(
-        /* FT | NFT | SFT */ issueESDTTypes.NFT,
-        /* Collection name */ "TestChest",
+        /* FT | NFT | SFT */ issueESDTTypes.SFT,
+        /* Collection name */ "TestChestSFT",
         /* Token Ticker    */ "TLANDCHEST",
-        /* Token Properties*/ [
-            ''
-        ]
+        /* Token Properties*/ sftTokenProperties
     );
 
     exit(0);

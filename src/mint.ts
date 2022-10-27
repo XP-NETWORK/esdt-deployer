@@ -29,8 +29,6 @@ export const mintNFT = async (
 
     const { signer, userAccount, provider } = await setup();
 
-    const h = hash;
-
     const args: TypedValue[] = [
         BytesValue.fromUTF8(ticker),
         new BigUIntValue(new Bignumber(supply))
@@ -65,14 +63,17 @@ export const mintNFT = async (
 
 (async () => {
 
+    
+
     await mintNFT(
-        /* Ticker */ "TLANDCHEST-112199",
-        /* Supply */ 1,
-        /* name */ 'Polkamonster',
-        /* royalties */ 500,
+        //                  SFT                    NFT
+        /* Ticker */ "TLANDCHEST-295de4", //"TLANDCHEST-112199",
+        /* Supply */ 1731,
+        /* name */ 'Pontic Chest',
+        /* royalties */ 5*100,
         /* hash */ '',
-        /* Attributes */ 'https://assets.polkamon.com/images/Unimons_T06C02H10B04G00.jpg',
-        /* uris */ ['https://bridge-wnftapi.herokuapp.com/w/635658439d0e07da66b4ba29']
+        /* Attributes */ 'https://nft.ageofzalmoxis.com/ipfs/QmT1J6L5QztvLNHiBzfMnLf6MGpqvnDqVCmvx9eGLfkoru/SFT_Pontic.mp4',
+        /* uris */ ['https://nft.ageofzalmoxis.com/ipfs/QmT1J6L5QztvLNHiBzfMnLf6MGpqvnDqVCmvx9eGLfkoru/SFT_Pontic.mp4']
     );
 
     exit(0);
