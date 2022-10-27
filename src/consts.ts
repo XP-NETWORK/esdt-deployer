@@ -31,21 +31,18 @@ export const elrondExplorer: StringMapping = {
     mainnet: 'https://explorer.elrond.com',
 };
 
-export const esdtTokenProperties = [
-    'canFreeze',
-    'canWipe',
-    'canPause',
-    'canMint',
-    'canBurn',
-    'canChangeOwner',
-    'canUpgrade',
-    'canAddSpecialRoles',
-] as const;
+export type ESDTTypes = 'FT' | 'NFT' | 'SFT';
 
-export const esdtTokenSpecialRoles = [
-    'ESDTRoleLocalBurn',
-    'ESDTRoleLocalMint'
-]as const;
+export const esdtTokenProperties = [
+    'canFreeze', // the token manager may freeze the token balance in a specific account, preventing transfers to and from that account
+    'canWipe', // the token manager may wipe out the tokens held by a frozen account, reducing the supply
+    'canPause', // the token manager may prevent all transactions of the token, apart from minting and burning
+    'canMint', // more units of this token can be minted by the token manager after initial issuance, increasing the supply
+    'canBurn', // users may "burn" some of their tokens, reducing the supply
+    'canChangeOwner', // token management can be transferred to a different account
+    'canUpgrade', // the token manager may change these properties
+    'canAddSpecialRoles', // the token manager can assign a specific role(s)
+];
 
 export const sftTokenProperties = [
     'canFreeze',
@@ -55,21 +52,38 @@ export const sftTokenProperties = [
     'canChangeOwner',
     'canUpgrade',
     'canAddSpecialRoles',
-] as const;
-
-export const sftTokenSpecialRoles = [
-    'ESDTRoleNFTCreate',
-    'ESDTRoleNFTBurn',
-    'ESDTRoleNFTAddQuantity',
-    'ESDTTransferRole',
-]as const;
-
-export let ALL_PROPS = [
-    ...sftTokenProperties,
-    ...sftTokenSpecialRoles,
 ];
 
-export type ALL_PROPERTIES = typeof ALL_PROPS[number]
+// SPECIAL ROLES:
+
+export enum esdtTokenSpecialRoles {
+    ESDTRoleLocalBurn = 'ESDTRoleLocalBurn',
+    ESDTRoleLocalMint = 'ESDTRoleLocalMint'
+}
+
+export enum nftTokenSpecialRoles {
+    ESDTRoleNFTCreate = 'ESDTRoleNFTCreate', // allows one to create a new NFT
+    ESDTRoleNFTBurn = 'ESDTRoleNFTBurn', //allows one to burn quantity of a specific NFT
+    ESDTTransferRole = 'ESDTTransferRole',//this role enables transfer only to specified addresses in the same shard
+    ESDTRoleNFTAddURI = 'ESDTRoleNFTAddURI', //allows one add URIs for a specific NFT
+    ESDTRoleNFTUpdateAttributes = 'ESDTRoleNFTUpdateAttributes', // allows one to change the attributes of a specific NFT
+}
+
+export enum sftTokenSpecialRoles {
+    ESDTRoleNFTCreate = 'ESDTRoleNFTCreate', // allows one to create a new SFT
+    ESDTRoleNFTBurn = 'ESDTRoleNFTBurn', //allows one to burn quantity of a specific SFT
+    ESDTRoleNFTAddQuantity = 'ESDTRoleNFTAddQuantity', // allows one to add quantity of a specific SFT
+    ESDTTransferRole = 'ESDTTransferRole',//this role enables transfer only to specified addresses in the same shard
+}
+    
+
+export declare type ALL_PROPERTIES = typeof esdtTokenProperties
+    | typeof nftTokenSpecialRoles
+    | typeof sftTokenProperties;
+
+export declare type ALL_SPECIAL_PROPERTIES = typeof esdtTokenSpecialRoles
+    | typeof nftTokenSpecialRoles
+    | typeof sftTokenSpecialRoles
 
 // Build in address for tokens operations
 export const builtInSC =
@@ -82,8 +96,15 @@ export const commonOpertationsGasLimit = 60_000_000;
 export const commonBuiltInOpertationsGasLimit = 6_000_000;
 export const specialOpertationsGasLimit = 3_000_00;
 
+export enum issueESDTTypes {
+    fungible = 'issue',
+    NFT = 'issueNonFungible',
+    SFT = 'issueSemiFungible'
+}
+
 // XP.NETWORK Exclusive
 export enum BridgeAddress {
     devnet = "erd1qqqqqqqqqqqqqpgqy2nx5z4cpr90de4sga2v2yx62fph3lg8g6vskt0k2f",
     mainnet = "erd1qqqqqqqqqqqqqpgq3y98dyjdp72lwzvd35yt4f9ua2a3n70v0drsfycvu8"
 }
+

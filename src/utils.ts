@@ -6,13 +6,14 @@ import {
     SmartContract, 
     Address, 
     Transaction, 
-    TransactionWatcher 
+    TransactionWatcher,
+    TransactionHash
 } from '@elrondnetwork/erdjs';
-import ora from 'ora';//Spinner
 import keccak from 'keccak';
 import { parseUserKey, UserSigner } from '@elrondnetwork/erdjs-walletcore';
 import { ApiNetworkProvider } from '@elrondnetwork/erdjs-network-providers';
 import { publicApi, chain, elrondExplorer} from './consts';
+import axios from 'axios';
 
 const baseDir = cwd();
 
@@ -81,6 +82,44 @@ export const setup = async () => {
   };
 };
 
+export const transactionResult = async (tx_hash: string) => {
+
+  const providerRest = axios.create({
+    baseURL: publicApi[chain]
+  })
+
+  const uri = `/transaction/${tx_hash}?withResults=true`;
+  let tries = 0;
+
+  while (tries < 10) {
+    tries += 1;
+    let err;
+    // TODO: type safety
+    const res = await providerRest.get(uri).catch((e) => (err = e));
+    if (err) {
+      await new Promise((r) => setTimeout(r, 3000));
+      continue;
+    }
+    const data = res.data;
+    if (data["code"] != "successful") {
+      throw Error("failed to execute txn");
+    }
+
+    const tx_info = data["data"]["transaction"];
+    if (tx_info["status"] == "pending") {
+      await new Promise((r) => setTimeout(r, 5000));
+      continue;
+    }
+    if (tx_info["status"] != "success") {
+      throw Error("failed to execute txn");
+    }
+
+    return tx_info;
+  }
+
+  throw Error(`failed to query transaction exceeded 10 retries ${tx_hash}`);
+};
+
 export const commonTxOperations = async (
     tx: Transaction,
     account: Account,
@@ -91,9 +130,6 @@ export const commonTxOperations = async (
     account.incrementNonce();
     signer.sign(tx);
   
-    const spinner = ora('Processing the transaction...');
-    spinner.start();
-  
     await provider.sendTransaction(tx);
   
     const watcher = new TransactionWatcher(provider);
@@ -102,12 +138,13 @@ export const commonTxOperations = async (
     const txHash = transactionOnNetwork.hash;
     const txStatus = transactionOnNetwork.status;
   
-    spinner.stop();
-  
     console.log(`\nTransaction status: ${txStatus}`);
     console.log(
       `Transaction link: ${elrondExplorer[chain]}/transactions/${txHash}\n`
     );
+
+    const result = await transactionResult(txHash);
+
   };
 
   export const dnsScAddressForHerotag = (herotag: string) => {
@@ -178,9 +215,9 @@ export const commonTxOperations = async (
    */
   export const isValidDecimals = (decimals:number) => {
 
-    if(!decimals || new Bignumber(decimals).isNaN()) throw new Error("The 'decimals' parameter is Required!");
     if(decimals > 18 || decimals < 0){
         throw new Error("'decimals' must lie between 0 and 18 digits");
     }
       return true;
+  
   }
