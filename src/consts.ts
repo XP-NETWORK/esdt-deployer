@@ -75,6 +75,26 @@ export enum sftTokenSpecialRoles {
     ESDTRoleNFTAddQuantity = 'ESDTRoleNFTAddQuantity', // allows one to add quantity of a specific SFT
     ESDTTransferRole = 'ESDTTransferRole',//this role enables transfer only to specified addresses in the same shard
 }
+
+// Comment out the unrequired roles
+export const ftSpecialRoles = [
+    esdtTokenSpecialRoles.ESDTRoleLocalBurn,
+    esdtTokenSpecialRoles.ESDTRoleLocalMint
+]
+
+export const nftSpecialRoles = [
+    nftTokenSpecialRoles.ESDTRoleNFTCreate,
+    nftTokenSpecialRoles.ESDTRoleNFTBurn,
+    nftTokenSpecialRoles.ESDTTransferRole,
+    nftTokenSpecialRoles.ESDTRoleNFTUpdateAttributes
+];
+
+export const sftSpecialRoles = [
+    sftTokenSpecialRoles.ESDTRoleNFTAddQuantity,
+    sftTokenSpecialRoles.ESDTRoleNFTBurn,
+    sftTokenSpecialRoles.ESDTRoleNFTCreate,
+    sftTokenSpecialRoles.ESDTTransferRole
+]
     
 
 export declare type ALL_PROPERTIES = typeof esdtTokenProperties

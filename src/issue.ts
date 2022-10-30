@@ -34,43 +34,43 @@ export const issueESDT = async (
     type: issueESDTTypes,
     name: string,
     ticker: string,
-    tokenProperties:string[],
+    tokenProperties: string[],
     initialSupply?: number,
     numberOfDecimals?: number,
 ) => {
 
-    if(!numberOfDecimals) numberOfDecimals=0
-    if(!initialSupply) initialSupply=0
+    if (!numberOfDecimals) numberOfDecimals = 0
+    if (!initialSupply) initialSupply = 0
 
 
-    if( isValidTokenName(name)
-    && isValidTokenTicker(ticker)
-    && isValidDecimals(numberOfDecimals)
-    ){
+    if (isValidTokenName(name)
+        && isValidTokenTicker(ticker)
+        && isValidDecimals(numberOfDecimals)
+    ) {
         const { signer, userAccount, provider } = await setup();
         const payment = TokenPayment.egldFromAmount(issueTokenPayment);
-    
+
         const args: TypedValue[] = [
             BytesValue.fromUTF8(name),
             BytesValue.fromUTF8(ticker),
         ];
 
-        if(type == 'issue'){
+        if (type == 'issue') {
             args.push(new BigUIntValue(new Bignumber(initialSupply)))
             args.push(new U32Value(numberOfDecimals))
         }
-    
-        for (const property of tokenProperties){
-    
+
+        for (const property of tokenProperties) {
+
             args.push(BytesValue.fromUTF8(property));
             args.push(BytesValue.fromUTF8(true.toString()));
         }
-    
+
         const data = new ContractCallPayloadBuilder()
-        .setFunction(new ContractFunction(type))
-        .setArgs(args)
-        .build();
-    
+            .setFunction(new ContractFunction(type))
+            .setArgs(args)
+            .build();
+
         const tx = new Transaction({
             data,
             gasLimit: commonOpertationsGasLimit,
@@ -79,7 +79,7 @@ export const issueESDT = async (
             value: payment,
             chainID: shortChainId[chain]
         });
-            
+
         await commonTxOperations(tx, userAccount, signer, provider);
     }
 }
@@ -89,11 +89,16 @@ export const issueESDT = async (
 
     const {
         ISSUE_NAME,
-        ISSUE_TICKER
+        ISSUE_TICKER,
+        ISSUE_TYPE
     } = process.env;
 
+    let issueType:issueESDTTypes = ISSUE_TYPE! 
+        ? ISSUE_TYPE! as issueESDTTypes 
+        : 'NFT' as issueESDTTypes;
+
     await issueESDT(
-        /* FT | NFT | SFT */ issueESDTTypes.SFT,
+        /* FT | NFT | SFT */ issueType,
         /* Collection name */ ISSUE_NAME!,
         /* Token Ticker    */ ISSUE_TICKER!,
         /* Token Properties*/ sftTokenProperties

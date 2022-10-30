@@ -16,12 +16,10 @@ import {
     shortChainId,
     builtInSC,
     commonOpertationsGasLimit,
-    esdtTokenSpecialRoles,
-    nftTokenSpecialRoles,
-    sftTokenSpecialRoles,
     BridgeAddress,
-    ESDTTypes,
-    sftTokenProperties
+    ftSpecialRoles,
+    nftSpecialRoles,
+    sftSpecialRoles
 } from './consts';
 
 import {
@@ -29,29 +27,27 @@ import {
     commonTxOperations
 } from './utils';
 
-import { transferOwnershipEsdt } from './ownership';
-
 export const setSpecialRolesEsdt = async (
     ticker: string,
-    address: BridgeAddress|IAddress,
+    address: BridgeAddress | IAddress,
     specialRoles: string[]
 ) => {
 
     const { signer, userAccount, provider } = await setup();
 
-    let addr:AddressValue;
-    
-    try{
-        if(typeof(address) == typeof BridgeAddress){
+    let addr: AddressValue;
+
+    try {
+        if (typeof (address) == typeof BridgeAddress) {
             const a: BridgeAddress = address as BridgeAddress;
             addr = new AddressValue(new Address(a.trim()))
-        }else{
+        } else {
             addr = new AddressValue(address as IAddress);
         }
-    }catch(e){
+    } catch (e) {
         addr = new AddressValue(address as IAddress);
     }
-    
+
     const args: TypedValue[] = [
         BytesValue.fromUTF8(ticker),
         addr,
@@ -81,40 +77,56 @@ export const setSpecialRolesEsdt = async (
 
 (async () => {
 
-    const { signer} = await setup();
+    const { signer } = await setup();
 
     const {
-        ROLES_TICKER
+        ROLES_TICKER,
+        ROLES_TYPE,
+        ROLES_ADDRESS
     } = process.env;
 
-    // Comment out the unrequired roles
-    const ftSpecialRoles = [
-        esdtTokenSpecialRoles.ESDTRoleLocalBurn,
-        esdtTokenSpecialRoles.ESDTRoleLocalMint
-    ]
 
-    const nftSpecialRoles = [
-        nftTokenSpecialRoles.ESDTRoleNFTCreate,
-        nftTokenSpecialRoles.ESDTRoleNFTBurn,
-        nftTokenSpecialRoles.ESDTTransferRole,
-        nftTokenSpecialRoles.ESDTRoleNFTUpdateAttributes
-    ];
-
-    const sftSpecialRoles = [
-        sftTokenSpecialRoles.ESDTRoleNFTAddQuantity,
-        sftTokenSpecialRoles.ESDTRoleNFTBurn,
-        sftTokenSpecialRoles.ESDTRoleNFTCreate,
-        sftTokenSpecialRoles.ESDTTransferRole
-    ]
+    let ROLES: string[];
 
     // Select one of the above
-    const ROLES = sftSpecialRoles;
+    switch (ROLES_TYPE) {
+
+        case 'FT':
+            ROLES = ftSpecialRoles;
+            break;
+
+        case 'NFT':
+            ROLES = nftSpecialRoles;
+            break;
+
+        case 'SFT':
+            ROLES = sftSpecialRoles;
+            break;
+
+        default:
+            throw Error("ROLES_TYPE= is not set in the .env");
+    }
 
     const contract = BridgeAddress.devnet
 
+    let RECIPIENT: any;
+
+    switch (ROLES_ADDRESS) {
+        case BridgeAddress.devnet:
+            RECIPIENT = BridgeAddress.devnet;
+            break;
+        case BridgeAddress.mainnet:
+            RECIPIENT = BridgeAddress.mainnet;
+            break;
+
+        default:
+            RECIPIENT = signer.getAddress()
+            break;
+    }
+
     await setSpecialRolesEsdt(
         /* Token Ticker */ ROLES_TICKER!,
-        /* Role Address */ signer.getAddress(), //contract, // brdge
+        /* Role Address */ RECIPIENT,
         /* Roles */ ROLES
     );
 
