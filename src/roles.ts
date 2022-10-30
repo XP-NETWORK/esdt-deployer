@@ -83,6 +83,10 @@ export const setSpecialRolesEsdt = async (
 
     const { signer} = await setup();
 
+    const {
+        ROLES_TICKER
+    } = process.env;
+
     // Comment out the unrequired roles
     const ftSpecialRoles = [
         esdtTokenSpecialRoles.ESDTRoleLocalBurn,
@@ -106,11 +110,10 @@ export const setSpecialRolesEsdt = async (
     // Select one of the above
     const ROLES = sftSpecialRoles;
 
-    const ticker = "TLANDCHEST-295de4" //"TLANDCHEST-112199";
     const contract = BridgeAddress.devnet
 
     await setSpecialRolesEsdt(
-        /* Token Ticker */ ticker,
+        /* Token Ticker */ ROLES_TICKER!,
         /* Role Address */ signer.getAddress(), //contract, // brdge
         /* Roles */ ROLES
     );

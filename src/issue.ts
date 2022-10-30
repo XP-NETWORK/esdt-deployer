@@ -87,12 +87,15 @@ export const issueESDT = async (
 
 (async () => {
 
-
+    const {
+        ISSUE_NAME,
+        ISSUE_TICKER
+    } = process.env;
 
     await issueESDT(
         /* FT | NFT | SFT */ issueESDTTypes.SFT,
-        /* Collection name */ "TestChestSFT",
-        /* Token Ticker    */ "TLANDCHEST",
+        /* Collection name */ ISSUE_NAME!,
+        /* Token Ticker    */ ISSUE_TICKER!,
         /* Token Properties*/ sftTokenProperties
     );
 
