@@ -57,15 +57,11 @@ yarn set-roles
 ```bash
 # 3. Set Minting Params & run yarn mint
 MINT_TICKER="Collection-12345"
-# 1 for NFT, 1..MAX_INT for FTs/SFTs
+# 1 for NFT, 1..MAX_INT
 MINT_SUPPLY=1
-MINT_NAME="NFT Name"
+MINT_NAME=""
 MINT_ROYALTIES=0
 MINT_ATTRIBUTES="https://your.url.here"
 # Comma separated string of values, no spaces
 MINT_URI="https://your.url.here"
-```
-3.2 Run the following command in the terminal:
-```bash
-yarn mint
 ```

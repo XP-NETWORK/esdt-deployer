@@ -1,6 +1,33 @@
 import { config } from 'dotenv'; config();
 import { env } from 'process';
 
+export enum EgldServiceType {
+    issue = 'issue',
+    issueNonFungible = 'issueNonFungible',
+    issueSemiFungible = 'issueSemiFungible',
+    ESDTNFTCreate = 'ESDTNFTCreate',
+    stopNFTCreate = 'stopNFTCreate',
+    ESDTTransfer = 'ESDTTransfer',
+    mint = 'mint',
+    ESDTBurn = 'ESDTBurn',
+    pause = 'pause',
+    unPause = 'unPause',
+    freeze = 'freeze',
+    unFreeze = 'unFreeze',
+    wipe = 'wipe',
+    setSpecialRole = 'setSpecialRole',
+    unSetSpecialRole = 'unSetSpecialRole',
+    transferOwnership = 'transferOwnership',
+    controlChanges = 'controlChanges',
+    transferNFTCreateRole = 'transferNFTCreateRole',
+    ESDTNFTAddQuantity = 'ESDTNFTAddQuantity',
+    ESDTNFTBurn = 'ESDTNFTBurn',
+    freezeSingleNFT = 'freezeSingleNFT',
+    wipeSingleNFT = 'wipeSingleNFT',
+    unFreezeSingleNFT = 'unFreezeSingleNFT',
+    ESDTNFTTransfer = 'ESDTNFTTransfer',
+  }
+
 // The mapping type where key & value are strings
 export type StringMapping = { [key: string]: string };
 
@@ -64,7 +91,7 @@ export enum esdtTokenSpecialRoles {
 export enum nftTokenSpecialRoles {
     ESDTRoleNFTCreate = 'ESDTRoleNFTCreate', // allows one to create a new NFT
     ESDTRoleNFTBurn = 'ESDTRoleNFTBurn', //allows one to burn quantity of a specific NFT
-    ESDTTransferRole = 'ESDTTransferRole',//this role enables transfer only to specified addresses in the same shard
+    //ESDTTransferRole = 'ESDTTransferRole',//this role enables transfer only to specified addresses in the same shard
     ESDTRoleNFTAddURI = 'ESDTRoleNFTAddURI', //allows one add URIs for a specific NFT
     ESDTRoleNFTUpdateAttributes = 'ESDTRoleNFTUpdateAttributes', // allows one to change the attributes of a specific NFT
 }
@@ -73,7 +100,7 @@ export enum sftTokenSpecialRoles {
     ESDTRoleNFTCreate = 'ESDTRoleNFTCreate', // allows one to create a new SFT
     ESDTRoleNFTBurn = 'ESDTRoleNFTBurn', //allows one to burn quantity of a specific SFT
     ESDTRoleNFTAddQuantity = 'ESDTRoleNFTAddQuantity', // allows one to add quantity of a specific SFT
-    ESDTTransferRole = 'ESDTTransferRole',//this role enables transfer only to specified addresses in the same shard
+    //ESDTTransferRole = 'ESDTTransferRole',//this role enables transfer only to specified addresses in the same shard
 }
 
 // Comment out the unrequired roles
@@ -85,7 +112,7 @@ export const ftSpecialRoles = [
 export const nftSpecialRoles = [
     nftTokenSpecialRoles.ESDTRoleNFTCreate,
     nftTokenSpecialRoles.ESDTRoleNFTBurn,
-    nftTokenSpecialRoles.ESDTTransferRole,
+    //nftTokenSpecialRoles.ESDTTransferRole,
     nftTokenSpecialRoles.ESDTRoleNFTUpdateAttributes
 ];
 
@@ -93,7 +120,7 @@ export const sftSpecialRoles = [
     sftTokenSpecialRoles.ESDTRoleNFTAddQuantity,
     sftTokenSpecialRoles.ESDTRoleNFTBurn,
     sftTokenSpecialRoles.ESDTRoleNFTCreate,
-    sftTokenSpecialRoles.ESDTTransferRole
+    //sftTokenSpecialRoles.ESDTTransferRole
 ]
     
 

@@ -2,4 +2,4 @@
 .env
 *.pem
 node_modules
-
+dist

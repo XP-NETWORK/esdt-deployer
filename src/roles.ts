@@ -37,16 +37,29 @@ export const setSpecialRolesEsdt = async (
 
     let addr: AddressValue;
 
-    try {
-        if (typeof (address) == typeof BridgeAddress) {
+    // try {
+    //     if (typeof (address) == typeof BridgeAddress) {
+    //         console.log("typeof (address) == ", typeof (address));
+    //         const a: BridgeAddress = address as BridgeAddress;
+    //         console.log("adress", a);
+    //         addr = new AddressValue(new Address(a.trim()));
+    //         console.log("addr = ", addr);
+            
+    //     } else {
+    //         addr = new AddressValue(address as IAddress);
+    //     }
+    // } catch (e) {
+    //     addr = new AddressValue(address as IAddress);
+    // }
+    
+    console.log("typeof (address) == ", typeof (address));
             const a: BridgeAddress = address as BridgeAddress;
-            addr = new AddressValue(new Address(a.trim()))
-        } else {
-            addr = new AddressValue(address as IAddress);
-        }
-    } catch (e) {
-        addr = new AddressValue(address as IAddress);
-    }
+            console.log("adress", a);
+            addr = new AddressValue(new Address(a.trim()));
+            console.log("addr = ", addr);
+
+    console.log("addr", addr);
+    
 
     const args: TypedValue[] = [
         BytesValue.fromUTF8(ticker),
@@ -113,13 +126,16 @@ export const setSpecialRolesEsdt = async (
 
     switch (ROLES_ADDRESS) {
         case BridgeAddress.devnet:
+            console.log("Setting roles to the devnet bridge...");
             RECIPIENT = BridgeAddress.devnet;
             break;
         case BridgeAddress.mainnet:
+            console.log("Setting roles to the mainnet bridge...");
             RECIPIENT = BridgeAddress.mainnet;
             break;
 
         default:
+            console.log("Setting roles to oneself...");
             RECIPIENT = signer.getAddress()
             break;
     }

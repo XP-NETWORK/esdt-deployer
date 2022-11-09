@@ -47,3 +47,22 @@ export const transferOwnershipEsdt = async (
       await commonTxOperations(tx, userAccount, signer, provider);
 
 }
+
+(async () => {
+
+  const {
+    ROLES_TICKER,
+    ROLES_ADDRESS
+  } = process.env;
+
+  const result = await transferOwnershipEsdt(
+    ROLES_TICKER!,
+    ROLES_ADDRESS!
+  )
+
+  exit(0);
+})().catch(e => {
+  console.error(e);
+  exit(1);
+})
+

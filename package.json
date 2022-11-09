@@ -6,7 +6,11 @@
   "scripts": {
     "issue-esdt": "tsc && node ./dist/issue.js",
     "set-roles": "tsc && node --experimental-modules ./dist/roles.js",
-    "mint": "tsc && node --experimental-modules ./dist/mint.js"
+    "mint": "tsc && node --experimental-modules ./dist/mint.js",
+    "burn": "tsc && node --experimental-modules ./dist/burn.js",
+    "update-uri":"tsc && node ./dist/updateURI.js",
+    "pass-ownership":"tsc && node ./dist/ownership.js",
+    "unset-role":"tsc && node ./dist/unset_role.js"
   },
   "dependencies": {
     "@elrondnetwork/erdjs": "^11.1.1",

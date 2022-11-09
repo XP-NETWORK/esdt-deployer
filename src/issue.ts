@@ -93,9 +93,22 @@ export const issueESDT = async (
         ISSUE_TYPE
     } = process.env;
 
-    let issueType:issueESDTTypes = ISSUE_TYPE! 
-        ? ISSUE_TYPE! as issueESDTTypes 
-        : 'NFT' as issueESDTTypes;
+    let issueType: issueESDTTypes;
+
+    switch (ISSUE_TYPE) {
+        case "FT":
+            issueType = issueESDTTypes.fungible;
+            break;
+        case "NFT":
+            issueType =issueESDTTypes.NFT;
+            break;
+        case "SFT":
+            issueType = issueESDTTypes.SFT;
+            break;
+        default:
+            issueType =issueESDTTypes.NFT;
+            break;
+    }
 
     await issueESDT(
         /* FT | NFT | SFT */ issueType,

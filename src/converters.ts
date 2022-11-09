@@ -23,14 +23,15 @@ const hexToBech32 = (inputValue: string) => {
     console.log(`${account.bech32()}\n`);
 };
 
-const decimalToHex = (inputValue: string) => {
+export const decimalToHex = (inputValue: string) => {
     const bigNumberVal = new BigNumber(inputValue, 10);
     let bigNumberString = bigNumberVal.toString(16);
     if (bigNumberString.length % 2 !== 0) {
         bigNumberString = `0${bigNumberString}`;
     }
-    console.log('\nDecimal to hex result:');
-    console.log(`${bigNumberString}\n`);
+    return bigNumberString;
+    // console.log('\nDecimal to hex result:');
+    // console.log(`${bigNumberString}\n`);
 };
 
 const hexToDecimal = (inputValue: string) => {
