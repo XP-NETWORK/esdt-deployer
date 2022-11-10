@@ -44,22 +44,22 @@ export const setSpecialRolesEsdt = async (
     //         console.log("adress", a);
     //         addr = new AddressValue(new Address(a.trim()));
     //         console.log("addr = ", addr);
-            
+
     //     } else {
     //         addr = new AddressValue(address as IAddress);
     //     }
     // } catch (e) {
     //     addr = new AddressValue(address as IAddress);
     // }
-    
+
     console.log("typeof (address) == ", typeof (address));
-            const a: BridgeAddress = address as BridgeAddress;
-            console.log("adress", a);
-            addr = new AddressValue(new Address(a.trim()));
-            console.log("addr = ", addr);
+    const a: BridgeAddress = address as BridgeAddress;
+    console.log("adress", a);
+    addr = new AddressValue(new Address(a.trim()));
+    console.log("addr = ", addr);
 
     console.log("addr", addr);
-    
+
 
     const args: TypedValue[] = [
         BytesValue.fromUTF8(ticker),

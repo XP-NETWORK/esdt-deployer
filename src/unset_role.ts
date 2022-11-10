@@ -16,21 +16,26 @@ import {
     issueTokenPayment,
     builtInSC,
     commonOpertationsGasLimit,
-    EgldServiceType
+    EgldServiceType,
+    BridgeAddress
 } from './consts';
 
 
 export const unsetSpecialRoles = async (
     ticker: string,
+    address:string,
     role: string
 ) => {
 
     const { signer, userAccount, provider } = await setup();
-    const payment = TokenPayment.egldFromAmount(issueTokenPayment);
+    //const payment = TokenPayment.egldFromAmount(issueTokenPayment);
+
+    const a: BridgeAddress = address as BridgeAddress;
+    const addr = new AddressValue(new Address(a.trim()));
 
     const args: TypedValue[] = [
         BytesValue.fromUTF8(ticker),
-        new AddressValue(signer.getAddress()),
+        addr,
         BytesValue.fromUTF8(role),
     ];
 
@@ -44,7 +49,6 @@ export const unsetSpecialRoles = async (
         gasLimit: commonOpertationsGasLimit,
         receiver: new Address(builtInSC.trim()),
         sender: signer.getAddress(),
-        value: payment,
         chainID: shortChainId[chain]
     });
 
@@ -56,14 +60,17 @@ export const unsetSpecialRoles = async (
 
     const {
         UNSET_TICKER,
+        UNSET_ADDRESS,
         UNSET_ROLE
     } = process.env;
 
     if (!UNSET_TICKER) throw Error("UNSET_TICKER missing");
+    if (!UNSET_ADDRESS) throw Error("UNSET_ADDRESS missing");
     if (!UNSET_ROLE) throw Error("UNSET_ROLE missing");
 
     await unsetSpecialRoles(
         UNSET_TICKER!,
+        UNSET_ADDRESS!,
         UNSET_ROLE!
     )
     exit(0);
